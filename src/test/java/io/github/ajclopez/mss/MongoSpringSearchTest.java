@@ -6,6 +6,7 @@ import io.github.ajclopez.mss.model.CastType;
 import io.github.ajclopez.mss.model.Configuration;
 import io.github.ajclopez.mss.model.LogicalOperation;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.data.mongodb.core.query.Query;
@@ -251,7 +252,7 @@ public class MongoSpringSearchTest {
 		
 		Assert.assertEquals(Long.valueOf(134000000000l), document.getLong("mobile"));
 	}
-	
+
 	@Test(expected = ArgumentNotValidException.class)
 	public void canThrowArgumentNotValidCastingNumber() {
 		
@@ -316,6 +317,22 @@ public class MongoSpringSearchTest {
 		String expected = Pattern.compile(pattern.pattern().replace("/", "")).pattern();
 		
 		Assert.assertEquals(expected, document.get("email").toString());
+	}
+
+	@Test
+	public void canUseCastingObjectId() {
+
+		Map<String, CastType> caster = new HashMap<String, CastType>();
+		caster.put("id", CastType.OBJECTID);
+
+		Configuration options = new Configuration(caster, null, null);
+
+		String query = "id=658d1af24cd3424a306e7941";
+		Query mongoQuery = MongoSpringSearch.mss(query, Optional.of(options));
+
+		Document document = ((Document)mongoQuery.getQueryObject().get("$and", BasicDBList.class).get(0));
+
+		Assert.assertEquals(new ObjectId("658d1af24cd3424a306e7941"), document.getObjectId("id"));
 	}
 	
 	@Test

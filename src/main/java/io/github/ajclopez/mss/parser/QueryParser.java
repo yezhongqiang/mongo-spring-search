@@ -5,6 +5,7 @@ import io.github.ajclopez.mss.model.CastType;
 import io.github.ajclopez.mss.model.SearchCriteria;
 import io.github.ajclopez.mss.model.SearchOperation;
 import io.github.ajclopez.mss.pattern.SearchPatterns;
+import org.bson.types.ObjectId;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -114,6 +115,8 @@ public class QueryParser {
 			return Pattern.compile(value.replace("/", ""));
 		case STRING:
 			return value;
+		case OBJECTID:
+			return new ObjectId(value);
 		default:
 			return parseValue(value);
 		}
