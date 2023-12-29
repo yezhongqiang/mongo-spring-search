@@ -216,7 +216,7 @@ You can use advanced options:
 Configuration(Map<String, CastType> casters, Integer defaultLimit, Integer maxLimit)
 ```
 
-* `casters` object to specify custom casters, key is the caster name, and value is a type (`BOOLEAN, NUMBER, PATTERN, DATE, STRING`).
+* `casters` object to specify custom casters, key is the caster name, and value is a type (`BOOLEAN, NUMBER, PATTERN, DATE, STRING, OBJECTID`).
 * `defaultLimit` which contains custom value to return records.
 * `maxLimit` which contains custom value to return a maximum of records.
 
@@ -245,6 +245,7 @@ casters.put("key1", CastType.STRING);
 casters.put("key2", CastType.NUMBER);
 casters.put("key3", CastType.STRING);
 casters.put("key4", CastType.BOOLEAN);
+casters.put("key5", CastType.OBJECTID);
 		
 Configuration options = new Configuration(casters, null, null);
 MongoSpringSearch.mss("key1=VALUE&key2=10&key3=20&key4=true", Optional.of(options));
